@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
-require 'open3'
-require 'io/wait'
 
 ALWAYS_PRINT_STDOUT=false
 ALWAYS_ECHO_CMDLINE=false
 EXCEPTION_ON_NONZERO_STATUS=false
+
+require 'open3'
+require 'io/wait'
 
 module BashLike
   def `(cmdline)
