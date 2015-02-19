@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'open3'
+require 'io/wait'
 
 ALWAYS_PRINT_STDOUT=false
 ALWAYS_ECHO_CMDLINE=false
@@ -16,11 +17,15 @@ module BashLike
     all_out = ''
     all_err = ''
     while wait_thr.alive?
-      current_out = stdout.read()
-      current_err = stderr.read()
+      if !(stderr.ready? || stdout.ready?)
+        sleep(0.1)
+        next
+      end
+      current_out = stdout.read(stdout.nread)
+      current_err = stderr.read(stderr.nread)
       all_out = all_out + current_out
       all_err = all_err + current_err
-      $stdout.puts current_out if ( print_each_line && !current_out.empty?)
+      $stdout.puts current_out if (print_each_line && !current_out.empty?)
       $stderr.puts current_err if !current_err.empty?
     end
     status = wait_thr.value
@@ -41,3 +46,4 @@ module BashLike
 end
 
 include BashLike
+# BASHINGTHEBASH END - write your things down there
