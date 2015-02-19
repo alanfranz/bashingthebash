@@ -3,8 +3,8 @@
 ALWAYS_PRINT_STDOUT=false
 ALWAYS_ECHO_CMDLINE=false
 EXCEPTION_ON_NONZERO_STATUS=false
-LOGFILE='/tmp/something.log'
-LOGFILE_MAX_LINES=5
+LOGFILE=nil
+LOGFILE_MAX_LINES=1000
 
 require 'open3'
 require 'io/wait'
@@ -73,5 +73,3 @@ end
 include BashLike
 # BASHINGTHEBASH END - write your things down there
 
-log "mandi frut come va?"
-log "asd"
