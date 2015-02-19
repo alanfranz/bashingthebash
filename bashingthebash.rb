@@ -3,6 +3,8 @@
 ALWAYS_PRINT_STDOUT=false
 ALWAYS_ECHO_CMDLINE=false
 EXCEPTION_ON_NONZERO_STATUS=false
+LOGFILE='/tmp/something.log'
+LOGFILE_MAX_LINES=5
 
 require 'open3'
 require 'io/wait'
@@ -44,7 +46,32 @@ module BashLike
     all_out
     }
   end
+
+  def log(message)
+    if $global_log.nil? and !LOGFILE.nil?
+      # remove the exceeding lines
+      if File.exists?(LOGFILE)
+        f = File.open(LOGFILE, "r")
+        lines = f.readlines()
+        retain_from = [lines.size, LOGFILE_MAX_LINES].min
+        retain_lines = lines[-retain_from..-1]
+        f.close()
+      else
+        retain_lines=[]
+      end
+      $global_log = File.open(LOGFILE, "w")
+      $global_log.write(retain_lines.join(''))
+    end
+
+    final_message = "[#{Time.now.to_s}] #{message}"
+    $global_log.puts(final_message) unless $global_log.nil?
+    $stdout.puts(final_message)
+  end
+
 end
 
 include BashLike
 # BASHINGTHEBASH END - write your things down there
+
+log "mandi frut come va?"
+log "asd"
