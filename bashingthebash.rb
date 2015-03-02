@@ -59,7 +59,7 @@ module BashLike
       else
         retain_lines=[]
       end
-      $global_log = File.open(LOGFILE, "w")
+      $global_log = File.open(LOGFILE, "a")
       $global_log.write(retain_lines.join(''))
     end
 
