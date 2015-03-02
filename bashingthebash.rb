@@ -11,7 +11,7 @@ require 'io/wait'
 
 module BashLike
   def `(cmdline)
-    puts p(cmdline, true)
+    p(cmdline, true)
   end
 
   def p(cmdline, print_each_line=ALWAYS_PRINT_STDOUT)
